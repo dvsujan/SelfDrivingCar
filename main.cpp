@@ -14,10 +14,19 @@ int main()
     Color c = RED ; 
     Car car = Car(p, s, c);
     MapParser mapParser = MapParser("assets/map.txt");
-    Physics physics = Physics(); 
     std::vector<Vector2> map = mapParser.getMapAndBoundary();
     std::vector<Sensor> sensors ;   
     SetTargetFPS(60);
+    Physics physics = Physics(); 
+    //printing the sensors and map to check if they are correct
+    // for (unsigned int i = 0; i < sensors.size(); i++)
+    // {
+    //     DrawLine(sensors[i].start.x, sensors[i].start.y, sensors[i].end.x, sensors[i].end.y, GREEN);
+    // }
+    // for (unsigned int i = 0; i < map.size(); i++)
+    // {
+    //     DrawCircle(map[i].x, map[i].y, 5, GREEN);
+    // }
 
     while (!WindowShouldClose())
     {
@@ -26,7 +35,7 @@ int main()
         DrawText("AI CAR", 560, 290, 40, RED); 
         ClearBackground(WHITE);
         sensors = car.getSensors();
-        // physics.checkCollision(sensors, map);
+        physics.MapSensorsDistance(sensors, map); 
         car.update();
         mapParser.draw();
         std::string carposs = "CarCoordinates " "x:"+std::to_string(car.getPos().x)+", y:"+std::to_string(car.getPos().y); 
