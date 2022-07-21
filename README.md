@@ -1,3 +1,3 @@
 # Self-driving-car
 
-![screenShot](https://i.ibb.co/LtYCF3c/Car-Screen-Shot.png "ScreenShot: ")
+![screenShot](https://i.ibb.co/0ttC4xm/Car-Screen-Shot.png "ScreenShot")

@@ -56,6 +56,19 @@ void RectangleC::update(Vector2 carPos,Vector2 size,float angle)
     this->p3 = {carPos.x + Size.x, carPos.y + Size.y};
     this->p4 = {carPos.x, carPos.y + Size.y};
     this->angle = angle;
-    this->rotate(-angle);
+    this->rotate(angle);
     show(); 
+}
+std::vector<Vector2> RectangleC::getPoints()
+{
+    std::vector<Vector2> points;
+    points.push_back(p1);
+    points.push_back(p2);
+    points.push_back(p3);
+    points.push_back(p4);
+    return points;
+}
+void RectangleC::setColor(Color color)
+{
+    this->color = color;
 }

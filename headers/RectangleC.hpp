@@ -18,5 +18,7 @@ private:
 public:
     RectangleC();
     void update(Vector2 carPos,Vector2 size,float angle); 
+    std::vector<Vector2> getPoints();
+    void setColor(Color color);
 };
 #endif // RECTANGLE_HPP
