@@ -4,5 +4,5 @@
 
 # TO-DO
 - [x] build basic game
-- [ ] refactor code
+- [x] refactor code
 - [ ] implement AI
