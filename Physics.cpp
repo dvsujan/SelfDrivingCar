@@ -99,26 +99,23 @@ bool Physics::CarMap(std::vector<Vector2> car, std::vector<Vector2> map)
     //if it is colliding return true else return false
     for (unsigned int i = 0; i < car.size(); i++)
     {
-        for (unsigned int j = 0; j < map.size()-1; j++)
+       //check for collision without using loop 
+        float x1 = car[i].x;
+        float y1 = car[i].y;
+        float x2 = car[i + 1].x;
+        float y2 = car[i + 1].y;
+        float x3 = map[0].x;
+        float y3 = map[0].y;
+        float x4 = map[1].x;
+        float y4 = map[1].y; 
+        float denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
+        float ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom;
+        float ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / denom;
+        if (ua > 0 && ua < 1 && ub > 0 && ub < 1)
         {
-            float x1 = car[i].x;
-            float y1 = car[i].y;
-            float x2 = car[i + 1].x;
-            float y2 = car[i + 1].y;
-            float x3 = map[j].x;
-            float y3 = map[j].y;
-            float x4 = map[j + 1].x;
-            float y4 = map[j + 1].y; 
-            float denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
-            float ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom;
-            float ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / denom;
-
-            if (ua > 0 && ua < 1 && ub > 0 && ub < 1)
-            {
-                return true;
-            }
-
-        }
+            
+            return true;
+        } 
     }
     return false;
 }

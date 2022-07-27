@@ -48,7 +48,7 @@ void MapParser::getMap()
         float x = std::stof(points[0]);
         float y = std::stof(points[1]);
         map.points.push_back({x, y});
-        std::cout<< std::endl;  
+        // std::cout<< std::endl;  
     }
 }
 

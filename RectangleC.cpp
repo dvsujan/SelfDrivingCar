@@ -57,6 +57,9 @@ void RectangleC::update(Vector2 carPos,Vector2 size,float angle)
     this->p4 = {carPos.x, carPos.y + Size.y};
     this->angle = angle;
     this->rotate(angle);
+    //draw 2 circles as lights in between like p3 and p4
+    DrawCircle(p3.x,p3.y,5,GRAY);
+    DrawCircle(p4.x,p4.y,5,GRAY);
     show(); 
 }
 std::vector<Vector2> RectangleC::getPoints()
