@@ -4,10 +4,25 @@
 #include "headers/Physics.hpp"
 #include "headers/Sensor.h"
 #include "headers/FileHandler.hpp"
+#include "headers/client.hpp"
 #include <vector>
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+// string split function
+
+std::vector<std::string> split(const std::string &s, char delim)
+{
+    std::vector<std::string> elems;
+    std::stringstream ss(s);
+    std::string item;
+    while (std::getline(ss, item, delim))
+    {
+        elems.push_back(item);
+    }
+    return elems;
+}
 
 int main()
 {
@@ -24,7 +39,8 @@ int main()
     filehandler << "Gas,Brake,steerLeft,steerRight,FrontSensor,frontLeftSensor,LeftSensor,BackLeftSensor,BackSensor,BackRightSensor,RightSensor,frontRightSensor" << std::endl;
     // FileHandler fileHandler = FileHandler("./data/sensor_input.csv","Gas,Brake,steerLeft,steerRight,FrontSensor,frontLeftSensor,LeftSensor,BackLeftSensor,BackSensor,BackRightSensor,RightSensor,frontRightSensor");
     SetTargetFPS(60);
-
+    Image appLogo = LoadImage("./assets/logo.png");
+    SetWindowIcon(appLogo);
     std::vector<float> distances;
     std::vector<Vector2> carPoints;
     int *inputs = new int[4];
@@ -32,7 +48,17 @@ int main()
     {
         inputs[i] = 0;
     }
+    int *inputsff = new int[4];
+    for (int i = 0; i < 4; i++)
+    {
+        inputsff[i] = 0;
+    }
+    ///////////////////////////////////////////////////////////////////////
     int x = 1;
+    int y = 1;
+    ///////////////////////////////////////////////////////////////////////
+    socket_communication::Client client("127.0.0.1", 5001); // ip, port
+    ///////////////////////////////////////////////////////////////////////
     while (!WindowShouldClose())
     {
         BeginDrawing();
@@ -62,8 +88,31 @@ int main()
         DrawText(s6d.c_str(), 400, 800, 20, GREEN);
         DrawText(s7d.c_str(), 620, 800, 20, GREEN);
         DrawText(s8d.c_str(), 850, 800, 20, GREEN);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if (y % 2 == 0)
+        {
+            std::string SensorData = std::to_string(distances[0]) + "," + std::to_string(distances[1]) + "," + std::to_string(distances[2]) + "," + std::to_string(distances[3]) + "," + std::to_string(distances[4]) + "," + std::to_string(distances[5]) + "," + std::to_string(distances[6]) + "," + std::to_string(distances[7]);
+            client.Send(SensorData);
+            std::string outputData = client.Receive();
+            std::vector<std::string> outputDataVector = split(outputData, ',');
+            inputsff[0] = std::stoi(outputDataVector[0]);
+            inputsff[1] = std::stoi(outputDataVector[1]);
+            inputsff[2] = std::stoi(outputDataVector[2]);
+            inputsff[3] = std::stoi(outputDataVector[3]);
+            car.updateCarWithInputs(inputsff);
+            DrawText("AIMODE", 560, 440, 40, RED);
+        }
+        else
+        {
+            car.update();
+            DrawText("Manual Mode", 560, 440, 40, GREEN);
+        }
+        if (IsKeyPressed(KEY_T))
+        {
+            y = y + 1;
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        car.update();
         mapParser.draw();
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // write all inputs and sensor data to file
@@ -74,13 +123,13 @@ int main()
             filehandler << outputText << std::endl;
             DrawText("Recording...", 1000, 10, 20, RED);
         }
-        if(IsKeyPressed(KEY_R))
+        if (IsKeyPressed(KEY_R))
         {
-            x = x+1 ; 
+            x = x + 1;
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        ///////////////////////////////////////////////////////////////////////////////////////////////// 
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         std::string carposs = "CarCoordinates "
                               "x:" +
                               std::to_string(car.getPos().x) + ", y:" + std::to_string(car.getPos().y);
@@ -96,7 +145,56 @@ int main()
     }
     // fileHandler.close();
     filehandler.close();
-    std::cout<< "file closed Successfully"<<std::endl; 
+    std::cout << "file closed Successfully" << std::endl;
+    client.Send("exit"); 
+    std::cout<< "Socket Closed successfully"<<std::endl; 
     CloseWindow();
     return 0;
 }
+
+// #include "model.h"
+// #include<vector>
+// #include<iostream>
+
+// using keras2cpp::Model;
+// using keras2cpp::Tensor;
+
+// int main() {
+//     auto model = Model::load("modelcpp.model");
+//     // Create a tensor for data looking like this [[  0.,373.352234,387.641907,18.336056]]]
+//     Tensor in({1, 4});
+//     in.data_ = {0, 373.352234, 387.641907, 18.336056};
+//     // Run prediction.
+//     Tensor out = model(in);
+//     out.print();
+
+//     return 0;
+// }
+
+// int main() {
+//     // Initialize the library
+//     socket_communication::Client client("127.0.0.1", 5001);  // ip, port
+//     //run loop infinetly
+//     while (true) {
+//         std::string input;
+//         std::cout<<"Client: ";
+//         std::cin>>input;
+//         //send the data to the server
+//         client.Send(input);
+//         //get the data from the server
+//         std::string data = client.Receive();
+//         //if the data is not empty
+//         if (!data.empty()) {
+//             //split the data into two parts
+//             //if the data is not empty
+//             std::cout<<"Server: "<<data<<std::endl;
+//         }
+//         if(data == "exit")
+//         {
+//             break;
+//         }
+//         //get the data from the user
+//     }
+//     // std::string answer = client.Receive();  // Receive string
+//     // std::cout << "[SERVER]: " << answer << std::endl;
+// }

@@ -13,7 +13,7 @@ private:
     Color carColor;  
     float speed = 0 ;
     float acceleration = 0.2 ; 
-    float maxSpeed = 5 ;
+    float maxSpeed = 1 ;
     float friction = 0.05 ;
     float angle = 0 ; 
     void show();
@@ -32,6 +32,7 @@ public:
     std::vector<Vector2> getCarRectPoints();
     void stopMoving();
     void setCarColor(Color carColor);
+    void updateCarWithInputs(int inputs[]);
     int* getInputs();
 };
 #endif // CAR_HPP 

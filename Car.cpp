@@ -77,6 +77,54 @@ void Car::update()
     carRectangle.update({carPos.x-carSize.x/2, carPos.y-carSize.y/2}, carSize, -angle);
 }
 
+void Car::updateCarWithInputs(int inputs[]){ 
+    if (inputs[0] == 1)
+    {
+        speed += acceleration;
+    }
+    if (inputs[1] == 1)
+    {
+        speed -= acceleration;
+    }
+    if (speed > maxSpeed)
+    {
+        speed = maxSpeed;
+    }
+    if (speed < -maxSpeed / 2)
+    {
+        speed = -maxSpeed / 2;
+    }
+    if (speed > 0)
+    {
+        speed -= friction;
+    }
+    if (speed < 0)
+    {
+        speed += friction;
+    }
+    if (abs(speed) < friction)
+    {
+        speed = 0;
+    }
+    if (speed != 0)
+    {
+        int flip = speed > 0 ? 1 : -1;
+        if (inputs[2] == 1)
+        {
+            angle += 0.03 * flip;
+        }
+        if (inputs[3] == 1)
+        {
+            angle -= 0.03 * flip;
+        }
+    }
+    carPos.x += speed * sin(angle);
+    carPos.y += speed * cos(angle);
+    sensorManager.update(carPos,-angle);
+    carRectangle.update({carPos.x-carSize.x/2, carPos.y-carSize.y/2}, carSize, -angle);
+
+}
+
 Vector2 Car::getPos(){ return carPos;}
 float Car::getSpeed(){ return speed;}
 float Car::getAngle(){ 
