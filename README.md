@@ -5,4 +5,4 @@
 # TO-DO
 - [x] build basic game
 - [x] refactor code
-- [ ] implement AI
+- [x] implement AI

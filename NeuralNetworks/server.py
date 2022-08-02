@@ -4,7 +4,7 @@ class Server():
   """TCP IP communication server
   """
   def __init__(self, ip, port):
-    self.__size_message_length = 25 # Buffer size for the length
+    self.__size_message_length = 120 # Buffer size for the length
     # Start and connect to client
     self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     self.s.bind((ip, port))

@@ -13,7 +13,7 @@ private:
     Color carColor;  
     float speed = 0 ;
     float acceleration = 0.2 ; 
-    float maxSpeed = 1 ;
+    float maxSpeed = 2 ;
     float friction = 0.05 ;
     float angle = 0 ; 
     void show();

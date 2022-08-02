@@ -12,6 +12,11 @@
 #include <sstream>
 // string split function
 
+int roundf(float x ){
+    return (int)(x + 0.5);
+}
+
+
 std::vector<std::string> split(const std::string &s, char delim)
 {
     std::vector<std::string> elems;
@@ -91,16 +96,20 @@ int main()
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if (y % 2 == 0)
         {
+            //SensorData should have precision of 1  
             std::string SensorData = std::to_string(distances[0]) + "," + std::to_string(distances[1]) + "," + std::to_string(distances[2]) + "," + std::to_string(distances[3]) + "," + std::to_string(distances[4]) + "," + std::to_string(distances[5]) + "," + std::to_string(distances[6]) + "," + std::to_string(distances[7]);
             client.Send(SensorData);
             std::string outputData = client.Receive();
             std::vector<std::string> outputDataVector = split(outputData, ',');
-            inputsff[0] = std::stoi(outputDataVector[0]);
-            inputsff[1] = std::stoi(outputDataVector[1]);
-            inputsff[2] = std::stoi(outputDataVector[2]);
-            inputsff[3] = std::stoi(outputDataVector[3]);
+            inputsff[0] = roundf(std::stoi(outputDataVector[0])); 
+            inputsff[1] = roundf(std::stoi(outputDataVector[1])); 
+            inputsff[2] = roundf(std::stoi(outputDataVector[2]));
+            inputsff[3] = roundf(std::stoi(outputDataVector[3]));
             car.updateCarWithInputs(inputsff);
             DrawText("AIMODE", 560, 440, 40, RED);
+            //draw inputff on screen  
+            std::string sff = "Prediction: " + std::to_string(inputsff[0]) + "," + std::to_string(inputsff[1]) + "," + std::to_string(inputsff[2]) + "," + std::to_string(inputsff[3]);
+            DrawText(sff.c_str(), 460, 500, 20, GREEN);
         }
         else
         {

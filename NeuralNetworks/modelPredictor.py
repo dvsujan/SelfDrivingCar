@@ -16,18 +16,19 @@ if __name__ == "__main__":
         data = server.receive()
         if(data == 'exit'): break
         data = data.split(',')
+        # print(data)
         data = np.array(data, dtype=float)
         data = data.reshape(1, -1)        
         predictions = getPredictions(model, data)
+        # print(predictions) 
         predictions = [round(x, 1) for x in predictions[0]]
         res = '' 
-        
         for i in range(len(predictions)):
             if i == len(predictions) - 1:
                 res += str(predictions[i])
             else:
                 res += str(predictions[i]) + ','
-        
+        # print(res) 
         server.send(res)
 
 print("server closed Successfully")

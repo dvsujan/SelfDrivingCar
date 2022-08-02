@@ -115,7 +115,7 @@ class Client {
 
  private:
   SOCKET client_;
-  const int size_message_length_ = 25;  // Buffer size for the length
+  const int size_message_length_ = 120;  // Buffer size for the length
 };
 }  // namespace socket_communication
 
