@@ -31,6 +31,10 @@ Run NeuralNetworks/train.py to train the model
 Run NeuralNetworks/main.py to start the server 
 In car simulation, press **t** to toggle between ai mode and manual mode
 
+# Working 
+The car simulation is written in c++ and predictoin is done in python.
+using TCP sockets to communicate between the server and the client. 
+
 # contributing 
 this project is still in development.
 but the major part is done 
